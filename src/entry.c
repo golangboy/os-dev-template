@@ -5,6 +5,7 @@ int main()
 {
     console_clear();
     console_printf("Hello, kernel World!\n");
+    load_idt();
     while (1)
         ;
     return 0;

@@ -168,6 +168,11 @@ void console_write_hex(uint32_t n, real_color_t back, real_color_t fore)
 	char noZeroes = 1;
 
 	console_write_color("0x", back, fore);
+	if (n == 0)
+	{
+		console_write_color("0", back, fore);
+		return;
+	}
 
 	int i;
 	for (i = 28; i >= 0; i -= 4)
