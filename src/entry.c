@@ -4,7 +4,7 @@ void read_hd1(char *buf);
 int main()
 {
     console_clear();
-    console_write("HelloOS");
+    console_printf("Hello, kernel World!\n");
     while (1)
         ;
     return 0;
