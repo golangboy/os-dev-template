@@ -35,7 +35,7 @@ void load_idt()
                  :
                  : "m"(idt_desc));
 }
-void idt_handler(int vecNum, int errCode, int eip, int cs, int eflags)
+void idt_handler(int errCode, int vecNum, int eip, int cs, int eflags)
 {
     console_printf("IDT Vector:%d - Handler:%x\n", vecNum, eip);
     console_printf("Error Code:%x\n", errCode);
