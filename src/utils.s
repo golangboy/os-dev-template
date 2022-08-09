@@ -1,5 +1,11 @@
 [GLOBAL read_hd0]
 [GLOBAL read_hd1]
+[GLOBAL pic_eoi]
+pic_eoi:
+mov al,0x20
+out 0x20,al
+out 0xa0,al
+ret
 read_hd0:
 mov ebx,[esp+4]
 mov dx,0x1f6
