@@ -15,7 +15,23 @@ push 0
 
 push %1 ;Vector
 
+push eax
+push ebx
+push ecx
+push edx
+push esi
+push edi
+push ebp
+push esp
 call idt_handler
+pop esp
+pop ebp
+pop edi
+pop esi
+pop edx
+pop ecx
+pop ebx
+pop eax
 add esp,4*2
 
 sti
