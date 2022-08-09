@@ -83,6 +83,8 @@ mov ax,0x10
 mov ds,ax
 mov es,ax
 mov ss,ax
+mov fs,ax
+mov gs,ax
 jmp ebx
 
 gdt_ptr:
@@ -91,8 +93,8 @@ dd gdt_table_base
 ;;GDT
 gdt_table_base:
 dq 0
-dq 0xCF9800000000FF
-dq 0xCF9200000000FF
+dq 0xCF9A000000FFFF
+dq 0xCF92000000FFFF
 times 510-($-$$) db 0
 db 0x55
 db 0xaa
