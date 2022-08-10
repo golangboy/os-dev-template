@@ -14,6 +14,7 @@ int main(int *mcrNumber, MemBlock *memChkBuf)
 {
     console_clear();
     console_printf("Hello, kernel World!\n");
+    console_printf("Loading IDT\n");
     load_idt();
     init_8259();
     init_timer(100);

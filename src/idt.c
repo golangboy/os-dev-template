@@ -19,11 +19,11 @@ typedef struct interupt_descriptor
 struct interupt_descriptor idt_desc;
 void load_idt()
 {
-    console_printf("Loading IDT\n");
+    //console_printf("Loading IDT\n");
     for (int i = 0; i <= (IDT_NUM - 1); i++)
     {
         int base = *((&idt_table) + i);
-        console_printf("IDT Vector:%d - Handler:%x\n", i, base);
+        //console_printf("IDT Vector:%d - Handler:%x\n", i, base);
         idt_desc.idt[i].offset_low = base & 0xFFFF;
         idt_desc.idt[i].offset_high = (base >> 16) & 0xFFFF;
         idt_desc.idt[i].selector = 0x08;
