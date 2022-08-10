@@ -35,6 +35,7 @@ void init_task()
     for (int i = 0; i < MAX_TASK_NUM; i++)
     {
         task_list[i].valid = 0;
+        task_list[i].time_ticket = 0;
     }
 }
 void task_finish(int task_idx)
@@ -66,11 +67,24 @@ void schdule(int esp, int ebp, int edi, int esi, int edx, int ecx, int ebx, int 
     task_list[curtask_idx].esp = esp;
     task_list[curtask_idx].eip = eip;
     task_list[curtask_idx].eflags = eflags;
+    for (int i = 0; i < MAX_TASK_NUM; i++)
+    {
+        if (task_list[i].valid == 1 && task_list[i].time_ticket > 0)
+        {
+            // console_printf("time %d\n", task_list[i].time_ticket);
+            task_list[i].time_ticket--;
+        }
+    }
     for (int i = 0, k = 1; i < MAX_TASK_NUM; i++, k++)
     {
-        if (task_list[(k + curtask_idx) % MAX_TASK_NUM].valid == 1)
+        int next_task_idx = (k + curtask_idx) % MAX_TASK_NUM;
+        if (task_list[next_task_idx].valid == 1)
         {
-            curtask_idx = (k + curtask_idx) % MAX_TASK_NUM;
+            if (task_list[next_task_idx].time_ticket > 0)
+            {
+                continue;
+            }
+            curtask_idx = next_task_idx;
             // console_printf("schdule task\n");
             break;
         }
@@ -78,5 +92,12 @@ void schdule(int esp, int ebp, int edi, int esi, int edx, int ecx, int ebx, int 
     // console_printf(" %d - %d \n", task_list[0].valid, task_list[1].valid);
     // console_printf("next task:%d\n", curtask_idx);
     switch_task(task_list[curtask_idx].esp, task_list[curtask_idx].eip, task_list[curtask_idx].eax, task_list[curtask_idx].ebx, task_list[curtask_idx].ecx, task_list[curtask_idx].edx, task_list[curtask_idx].esi, task_list[curtask_idx].edi, task_list[curtask_idx].ebp, task_list[curtask_idx].eflags);
+    asm volatile("sti");
+}
+
+void sleep(int ms)
+{
+    asm volatile("cli");
+    task_list[curtask_idx].time_ticket = ms;
     asm volatile("sti");
 }
