@@ -1,5 +1,6 @@
 #include "idt.h"
 #include "console.h"
+#include "task.h"
 extern int idt_table;
 typedef struct interupt_gate
 {
@@ -37,10 +38,17 @@ void load_idt()
 }
 void idt_handler(int esp, int ebp, int edi, int esi, int edx, int ecx, int ebx, int eax, int vecNum, int errCode, int eip, int cs, int eflags)
 {
-    console_printf("IDT Vector:%d - Handler:%x\n", vecNum, eip);
-    console_printf("Error Code:%x\n", errCode);
-    console_printf("EIP:%x\n", eip);
-    console_printf("CS:%x\n", cs);
-    console_printf("EFLAGS:%x\n", eflags);
+    // esp+0x30 is the stack pointer
+    // console_printf("IDT Vector:%d - Handler:%x\n", vecNum, eip);
+    // console_printf("Error Code:%x\n", errCode);
+    // console_printf("EIP:%x\n", eip);
+    // console_printf("CS:%x\n", cs);
+    // console_printf("EFLAGS:%x\n", eflags);
+    // console_printf("EAX:%x EBX:%x ECX:%x EDX:%x\n EDI:%x ESI:%x ESP:%x EBP:%x\n", eax, ebx, ecx, edx, edi, esi, esp, ebp);
+    if (vecNum == 32)
+    {
+        //console_printf("vec=32\n");
+        schdule(esp + 0x30, ebp, edi, esi, edx, ecx, ebx, eax, eip, cs, eflags);
+    }
     pic_eoi();
 }
