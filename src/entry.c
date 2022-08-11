@@ -1,4 +1,5 @@
 #include "console.h"
+#include "mem.h"
 void read_hd0(char *buf);
 void read_hd1(char *buf);
 int total_mem = 0;
@@ -22,6 +23,10 @@ int main(int *mcrNumber, MemBlock *memChkBuf)
     asm volatile("sti");
     read_memsize(mcrNumber, memChkBuf);
     console_printf("Physical memory size: %d\n", total_mem);
+    //只管理1MB以上的内存
+    init_memmg(0x100000, total_mem - 0x100000);
+    console_printf("Free Mem: %d \n", get_freemem());
+    console_printf("Alloc Mem: %d \n", get_allocmem());
     while (1)
     {
     };
